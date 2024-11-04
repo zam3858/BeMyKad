@@ -1,0 +1,32 @@
+{
+  "name": "zam3858/bemykad",
+  "version": "1.0.0",
+  "description": "A PHP package to validate and extract information from Malaysian MyKad numbers.",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "BeMyKad\\": "src/"
+    }
+  },
+  "require": {
+    "php": ">=7.4"
+  },
+  "require-dev": {
+    "pestphp/pest": "^1.22"
+  },
+  "scripts": {
+    "test": "pest"
+  },
+  "authors": [
+    {
+      "name": "Hizam Mohd",
+      "email": "zam3858@gmail.com"
+    }
+  ],
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    }
+  }
+}
