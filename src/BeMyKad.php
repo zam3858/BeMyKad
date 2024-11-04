@@ -43,14 +43,10 @@ class BeMyKad
     }
     public function validFormat(): bool
     {
-        if (
+        return !(
             !preg_match('/^\d{6}\d{2}\d{4}$/', $this->mykadNumber)
             && !preg_match('/^\d{6}-\d{2}-\d{4}$/', $this->mykadNumber)
-        ) {
-            return false;
-        }
-
-        return true;
+        );
     }
 
     private function getCentury(): string {
