@@ -107,6 +107,10 @@ class BirthCountry
         '99' => 'No Information / Refugee',
     ];
 
+    /**
+     * @param string $code
+     * @return string
+     */
     static public function getPlaceOfBirth(string $code): string
     {
         return self::PLACE_OF_BIRTH[$code] ?? 'Unknown';

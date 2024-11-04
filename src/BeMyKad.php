@@ -3,28 +3,33 @@
 namespace BeMyKad;
 
 use DateTime;
-use Exception;
 
 class BeMyKad
 {
     protected string $mykadNumber;
-    
+
     const MALE = 0;
     const FEMALE = 1;
 
     /**
-     * @throws Exception
+     * @param string $mykadNumber
      */
     public function __construct(string $mykadNumber)
     {
-        $this->mykadNumber = str_replace('-','', $mykadNumber);
+        $this->mykadNumber = str_replace('-', '', $mykadNumber);
     }
 
+    /**
+     * @return bool
+     */
     public function isValid(): bool
     {
         return $this->validDOB() && $this->validFormat();
     }
 
+    /**
+     * @return bool
+     */
     public function validDOB(): bool
     {
         // Extract the date of birth from the IC number
@@ -41,6 +46,10 @@ class BeMyKad
 
         return true;
     }
+
+    /**
+     * @return bool
+     */
     public function validFormat(): bool
     {
         return !(
@@ -49,12 +58,19 @@ class BeMyKad
         );
     }
 
-    private function getCentury(): string {
+    /**
+     * @return string
+     */
+    private function getCentury(): string
+    {
 
         $nineth = substr($this->mykadNumber, 8, 1);
         return $nineth > 4 ? "19" : "20";
     }
 
+    /**
+     * @return string|null
+     */
     public function getDateOfBirth(): ?string
     {
         if (!$this->isValid()) {
@@ -94,6 +110,9 @@ class BeMyKad
         return (substr($this->mykadNumber, -1) % 2 === 0) ? self::FEMALE : self::MALE;
     }
 
+    /**
+     * @return string|null
+     */
     public function getState(): ?string
     {
         if (!$this->isValid()) {
