@@ -180,6 +180,6 @@ class BeMyKad
             'state' => $this->getState(),
         ];
 
-        return json_encode($mykadInfo, JSON_PRETTY_PRINT) ?? '';
+        return (string) json_encode($mykadInfo, JSON_PRETTY_PRINT);
     }
 }
