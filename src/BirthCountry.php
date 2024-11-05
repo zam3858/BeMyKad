@@ -4,6 +4,10 @@ namespace BeMyKad;
 
 class BirthCountry
 {
+    /**
+     * Mapping of state/country codes to their respective place of birth.
+     * Codes '00' to '99' cover Malaysian states, Federal Territories, and other regions.
+     */
     const PLACE_OF_BIRTH = [
         '00' => '—',
         '01' => 'Johor',
@@ -107,6 +111,13 @@ class BirthCountry
         '99' => 'No Information / Refugee',
     ];
 
+    /**
+     * Retrieves the place of birth based on the code provided.
+     * Returns 'Unknown' if the code does not exist in the mapping.
+     *
+     * @param  string  $code  The place of birth code from the MyKad number.
+     * @return string The corresponding place of birth or 'Unknown' if code is not found.
+     */
     public static function getPlaceOfBirth(string $code): string
     {
         return self::PLACE_OF_BIRTH[$code] ?? 'Unknown';
