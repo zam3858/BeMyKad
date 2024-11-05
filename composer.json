@@ -10,13 +10,17 @@
     }
   },
   "require": {
-    "php": ">=7.4"
+    "php": ">=7.4",
+    "laravel/pint": "^1.18"
   },
   "require-dev": {
-    "pestphp/pest": "^1.22"
+    "pestphp/pest": "^1.22",
+    "larastan/larastan": "^2.9"
   },
   "scripts": {
-    "test": "pest"
+    "analyse": "vendor/bin/phpstan analyse",
+    "test": "vendor/bin/pest",
+    "format": "vendor/bin/pint"
   },
   "authors": [
     {
