@@ -26,7 +26,8 @@ class BeMyKad
      * Constructor that initializes the MyKad number.
      * Removes any dashes for consistency.
      *
-     * @param string $mykadNumber The MyKad number to process.
+     * @param  string  $mykadNumber  The MyKad number to process.
+     *
      * @throws Exception If any error occurs during initialization.
      */
     public function __construct(string $mykadNumber)
