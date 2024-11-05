@@ -5,19 +5,29 @@ namespace BeMyKad;
 use DateTime;
 use Exception;
 
+/**
+ * Class BeMyKad
+ *
+ * A class to handle and validate Malaysian MyKad numbers, providing utilities for gender,
+ * date of birth, and state/place of birth based on the MyKad structure.
+ */
 class BeMyKad
 {
+    /** @var string The sanitized MyKad number without dashes */
     protected string $mykadNumber;
 
+    /** @var int Gender constant for male */
     const MALE = 0;
 
+    /** @var int Gender constant for female */
     const FEMALE = 1;
 
     /**
      * Constructor that initializes the MyKad number.
      * Removes any dashes for consistency.
      *
-     * @throws Exception
+     * @param string $mykadNumber The MyKad number to process.
+     * @throws Exception If any error occurs during initialization.
      */
     public function __construct(string $mykadNumber)
     {
@@ -26,6 +36,8 @@ class BeMyKad
 
     /**
      * Validates the MyKad number based on date of birth and format.
+     *
+     * @return bool True if the MyKad number is valid; otherwise, false.
      */
     public function isValid(): bool
     {
@@ -35,17 +47,15 @@ class BeMyKad
     /**
      * Validates the date of birth part of the MyKad number.
      * Checks if the extracted date is a valid calendar date.
+     *
+     * @return bool True if the date of birth is valid; otherwise, false.
      */
     public function validDOB(): bool
     {
-        // Extract the date of birth (YYMMDD) from the MyKad number
         $dobPart = substr($this->mykadNumber, 0, 6);
-
-        // Determine the century prefix based on the MyKad's 9th digit
         $century = $this->getCentury();
         $dobString = $century.$dobPart;
 
-        // Create a date object to validate the DOB format and value
         $dob = DateTime::createFromFormat('Ymd', $dobString);
 
         return $dob && $dob->format('Ymd') === $dobString;
@@ -54,10 +64,11 @@ class BeMyKad
     /**
      * Validates the format of the MyKad number.
      * Supports both the basic 12-digit format and the dashed format (YYMMDD-SS-GGGG).
+     *
+     * @return bool True if the MyKad number format is valid; otherwise, false.
      */
     public function validFormat(): bool
     {
-        // Ensure the MyKad number matches either of the valid patterns
         return preg_match('/^\d{12}$/', $this->mykadNumber) || preg_match('/^\d{6}-\d{2}-\d{4}$/', $this->mykadNumber);
     }
 
@@ -76,6 +87,8 @@ class BeMyKad
     /**
      * Extracts and returns the date of birth from the MyKad number in 'Y-m-d' format.
      * Returns null if the MyKad number is invalid.
+     *
+     * @return string|null The date of birth in 'Y-m-d' format or null if invalid.
      */
     public function getDateOfBirth(): ?string
     {
@@ -83,12 +96,10 @@ class BeMyKad
             return null;
         }
 
-        // Extract YYMMDD from the MyKad number and construct the full DOB string
         $dobPart = substr($this->mykadNumber, 0, 6);
         $century = $this->getCentury();
         $dobString = $century.$dobPart;
 
-        // Parse the date and format it as 'Y-m-d'
         $dob = DateTime::createFromFormat('Ymd', $dobString);
 
         return $dob ? $dob->format('Y-m-d') : null;
@@ -106,13 +117,14 @@ class BeMyKad
             return null;
         }
 
-        // Check if the last digit is even (female) or odd (male)
         return ((int) substr($this->mykadNumber, -1) % 2 === 0) ? self::FEMALE : self::MALE;
     }
 
     /**
      * Retrieves the state or place of birth based on the state code in the MyKad number.
      * Returns null if the MyKad number is invalid.
+     *
+     * @return string|null The state or place of birth associated with the MyKad number or null if invalid.
      */
     public function getState(): ?string
     {
@@ -120,7 +132,6 @@ class BeMyKad
             return null;
         }
 
-        // Extract the place of birth code and retrieve the corresponding state
         $pbCode = substr($this->mykadNumber, 6, 2);
 
         return BirthCountry::getPlaceOfBirth($pbCode);
