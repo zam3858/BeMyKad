@@ -1,6 +1,6 @@
 {
   "name": "zam3858/bemykad",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A PHP package to validate and extract information from Malaysian MyKad numbers.",
   "type": "library",
   "license": "MIT",
@@ -10,7 +10,8 @@
     }
   },
   "require": {
-    "php": ">=7.4"
+    "php": ">=7.4",
+    "ext-json": "*"
   },
   "require-dev": {
     "pestphp/pest": "^1.22"

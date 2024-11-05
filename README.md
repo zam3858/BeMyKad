@@ -35,6 +35,19 @@ if ($mykad->isValid()) {
 
     // Get state or country of birth
     echo "Place of Birth: " . $mykad->getState() . "\n";
+    
+    /**
+     * Outputs
+     * {
+     * "mykad": "960101141234",
+     * "formatted": "960101-14-1234",
+     * "isValid": true,
+     * "dateOfBirth": "1996-01-01",
+     * "gender": "Male",
+     * "state": "Johor"
+     * }
+     */
+    echo $mykad;
 } else {
     echo "Invalid MyKad number.";
 }
