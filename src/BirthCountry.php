@@ -121,7 +121,7 @@ class BirthCountry
     /**
      * Retrieves the place of birth based on the provided code.
      *
-     * @param string $code The two-digit place of birth code from the MyKad number.
+     * @param  string  $code  The two-digit place of birth code from the MyKad number.
      * @return string The corresponding place of birth or 'Unknown' if the code is not found in the mapping.
      */
     public static function getPlaceOfBirth(string $code): string
