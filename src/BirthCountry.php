@@ -2,11 +2,18 @@
 
 namespace BeMyKad;
 
+/**
+ * Class BirthCountry
+ *
+ * Provides a mapping of place of birth codes to corresponding locations,
+ * allowing retrieval of state, country, or territory based on a given code.
+ */
 class BirthCountry
 {
     /**
-     * Mapping of state/country codes to their respective place of birth.
-     * Codes '00' to '99' cover Malaysian states, Federal Territories, and other regions.
+     * @var array<string, string> Mapping of state/country codes to their respective place of birth.
+     *                            Codes '00' to '99' cover Malaysian states, Federal Territories,
+     *                            and other international locations.
      */
     const PLACE_OF_BIRTH = [
         '00' => '—',
@@ -112,11 +119,10 @@ class BirthCountry
     ];
 
     /**
-     * Retrieves the place of birth based on the code provided.
-     * Returns 'Unknown' if the code does not exist in the mapping.
+     * Retrieves the place of birth based on the provided code.
      *
-     * @param  string  $code  The place of birth code from the MyKad number.
-     * @return string The corresponding place of birth or 'Unknown' if code is not found.
+     * @param string $code The two-digit place of birth code from the MyKad number.
+     * @return string The corresponding place of birth or 'Unknown' if the code is not found in the mapping.
      */
     public static function getPlaceOfBirth(string $code): string
     {
