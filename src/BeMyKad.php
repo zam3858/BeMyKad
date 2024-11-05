@@ -13,13 +13,21 @@ use DateTime;
  */
 class BeMyKad
 {
+    /** @var string The sanitized MyKad number without dashes */
     protected string $mykadNumber;
 
+
+    /** @var int Gender constant for male */
     const MALE = 0;
+
+    /** @var int Gender constant for female */
     const FEMALE = 1;
 
     /**
      * BeMyKad constructor.
+     *
+     * Constructor that initializes the MyKad number.
+     * Removes any dashes for consistency.
      *
      * @param string $mykadNumber The MyKad number, with or without hyphens.
      */
@@ -39,17 +47,17 @@ class BeMyKad
     }
 
     /**
-     * Checks if the date of birth within the MyKad number is valid.
+     * Validates the date of birth part of the MyKad number.
+     * Checks if the extracted date is a valid calendar date.
      *
      * @return bool True if the date of birth is valid, false otherwise.
      */
     public function validDOB(): bool
     {
-        // Extract the date of birth from the IC number
         $dobPart = substr($this->mykadNumber, 0, 6);
-
         $century = $this->getCentury();
-        $dobString = $century . $dobPart;
+        $dobString = $century.$dobPart;
+
         $dob = DateTime::createFromFormat('Ymd', $dobString);
 
         // Check if the date of birth is valid
@@ -61,16 +69,35 @@ class BeMyKad
     }
 
     /**
-     * Checks if the MyKad number matches the required format.
+     * Validates the format of the MyKad number.
+     * Supports both the basic 12-digit format and the dashed format (YYMMDD-##-####).
      *
-     * @return bool True if the format is valid, false otherwise.
+     * @return bool True if the MyKad number format is valid; false otherwise.
      */
     public function validFormat(): bool
     {
-        return !(
-            !preg_match('/^\d{6}\d{2}\d{4}$/', $this->mykadNumber)
-            && !preg_match('/^\d{6}-\d{2}-\d{4}$/', $this->mykadNumber)
-        );
+        return preg_match('/^\d{12}$/', $this->mykadNumber) || preg_match('/^\d{6}-\d{2}-\d{4}$/', $this->mykadNumber);
+    }
+
+    /**
+     * Extracts and returns the date of birth from the MyKad number in 'Y-m-d' format.
+     * Returns null if the MyKad number is invalid.
+     *
+     * @return string|null The date of birth in 'Y-m-d' format or null if invalid.
+     */
+    public function getDateOfBirth(): ?string
+    {
+        if (! $this->isValid()) {
+            return null;
+        }
+
+        $dobPart = substr($this->mykadNumber, 0, 6);
+        $century = $this->getCentury();
+        $dobString = $century.$dobPart;
+
+        $dob = DateTime::createFromFormat('Ymd', $dobString);
+
+        return $dob ? $dob->format('Y-m-d') : null;
     }
 
     /**
@@ -86,57 +113,29 @@ class BeMyKad
     }
 
     /**
-     * Retrieves the date of birth from the MyKad number.
-     *
-     * @return string|null The date of birth in 'Y-m-d' format, or null if invalid.
-     */
-    public function getDateOfBirth(): ?string
-    {
-        if (!$this->isValid()) {
-            return null;
-        }
-
-        // Extract YYMMDD from the IC number
-        $dobPart = substr($this->mykadNumber, 0, 6);
-
-        $century = $this->getCentury();
-
-        // Construct the full date string
-        $dobString = $century . $dobPart;
-
-        // Parse the date string into a date object
-        $dob = DateTime::createFromFormat('Ymd', $dobString);
-
-        if (!$dob) {
-            return false;
-        }
-
-        // Format the date of birth
-        return $dob->format('Y-m-d');
-    }
-
-    /**
-     * Retrieves the gender based on the last digit of the MyKad number.
+     * Determines the gender based on the last digit of the MyKad number.
+     * Even number indicates female; odd number indicates male.
      *
      * @return int|null Self::MALE (1) for male, Self::FEMALE (0) for female, or null if invalid.
-     */
+    */
     public function getGender(): ?int
     {
-        if (!$this->isValid()) {
+        if (! $this->isValid()) {
             return null;
         }
 
-        return (substr($this->mykadNumber, -1) % 2 === 0) ? self::FEMALE : self::MALE;
+        return ((int) substr($this->mykadNumber, -1) % 2 === 0) ? self::FEMALE : self::MALE;
     }
 
     /**
-     * Retrieves the state or place of birth code from the MyKad number.
+     * Retrieves the state or place of birth based on the state code in the MyKad number.
+     * Returns null if the MyKad number is invalid.
      *
-     * @return string|null The state or place of birth, or null if invalid.
+     * @return string|null The state or place of birth associated with the MyKad number or null if invalid.
      */
     public function getState(): ?string
     {
-        if (!$this->isValid()) {
+        if (! $this->isValid()) {
             return null;
         }
 
@@ -184,4 +183,3 @@ class BeMyKad
         return json_encode($mykadInfo, JSON_PRETTY_PRINT);
     }
 }
-
