@@ -59,7 +59,7 @@ it('returns correct place of birth', function () {
     // Selangor
     $pbCode = '10';
 
-    $mykad = new BeMyKad('990101-' . $pbCode . '-1234');
+    $mykad = new BeMyKad('990101-'.$pbCode.'-1234');
     $state = BirthCountry::getPlaceOfBirth($pbCode);
 
     expect($mykad->getState())->toBe($state);

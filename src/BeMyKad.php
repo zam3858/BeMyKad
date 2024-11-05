@@ -8,8 +8,9 @@ use Exception;
 class BeMyKad
 {
     protected string $mykadNumber;
-    
+
     const MALE = 0;
+
     const FEMALE = 1;
 
     /**
@@ -17,7 +18,7 @@ class BeMyKad
      */
     public function __construct(string $mykadNumber)
     {
-        $this->mykadNumber = str_replace('-','', $mykadNumber);
+        $this->mykadNumber = str_replace('-', '', $mykadNumber);
     }
 
     public function isValid(): bool
@@ -31,33 +32,36 @@ class BeMyKad
         $dobPart = substr($this->mykadNumber, 0, 6);
 
         $century = $this->getCentury();
-        $dobString = $century . $dobPart;
+        $dobString = $century.$dobPart;
         $dob = DateTime::createFromFormat('Ymd', $dobString);
 
         // Check if the date of birth is valid
-        if (!$dob || $dob->format('Ymd') !== $dobString) {
+        if (! $dob || $dob->format('Ymd') !== $dobString) {
             return false;
         }
 
         return true;
     }
+
     public function validFormat(): bool
     {
-        return !(
-            !preg_match('/^\d{6}\d{2}\d{4}$/', $this->mykadNumber)
-            && !preg_match('/^\d{6}-\d{2}-\d{4}$/', $this->mykadNumber)
+        return ! (
+            ! preg_match('/^\d{6}\d{2}\d{4}$/', $this->mykadNumber)
+            && ! preg_match('/^\d{6}-\d{2}-\d{4}$/', $this->mykadNumber)
         );
     }
 
-    private function getCentury(): string {
+    private function getCentury(): string
+    {
 
         $nineth = substr($this->mykadNumber, 8, 1);
-        return $nineth > 4 ? "19" : "20";
+
+        return $nineth > 4 ? '19' : '20';
     }
 
     public function getDateOfBirth(): ?string
     {
-        if (!$this->isValid()) {
+        if (! $this->isValid()) {
             return null;
         }
 
@@ -67,13 +71,13 @@ class BeMyKad
         $century = $this->getCentury();
 
         // Construct the full date string
-        $dobString = $century . $dobPart;
+        $dobString = $century.$dobPart;
 
         // Parse the date string into a date object
         $dob = DateTime::createFromFormat('Ymd', $dobString);
 
-        if (!$dob) {
-            return false;
+        if (! $dob) {
+            return null;
         }
 
         // Format the date of birth
@@ -83,20 +87,20 @@ class BeMyKad
     /**
      * 0 = female
      * 1 = male
-     * @return int
      */
     public function getGender(): ?int
     {
-        if (!$this->isValid()) {
+        if (! $this->isValid()) {
             return null;
         }
 
-        return (substr($this->mykadNumber, -1) % 2 === 0) ? self::FEMALE : self::MALE;
+        // Cast the last character to an integer before applying the modulus operation
+        return ((int) substr($this->mykadNumber, -1) % 2 === 0) ? self::FEMALE : self::MALE;
     }
 
     public function getState(): ?string
     {
-        if (!$this->isValid()) {
+        if (! $this->isValid()) {
             return null;
         }
 
@@ -105,4 +109,3 @@ class BeMyKad
         return BirthCountry::getPlaceOfBirth($pbCode);
     }
 }
-
