@@ -16,7 +16,6 @@ class BeMyKad
     /** @var string The sanitized MyKad number without dashes */
     protected string $mykadNumber;
 
-
     /** @var int Gender constant for male */
     const MALE = 0;
 
@@ -29,7 +28,7 @@ class BeMyKad
      * Constructor that initializes the MyKad number.
      * Removes any dashes for consistency.
      *
-     * @param string $mykadNumber The MyKad number, with or without hyphens.
+     * @param  string  $mykadNumber  The MyKad number, with or without hyphens.
      */
     public function __construct(string $mykadNumber)
     {
@@ -61,7 +60,7 @@ class BeMyKad
         $dob = DateTime::createFromFormat('Ymd', $dobString);
 
         // Check if the date of birth is valid
-        if (!$dob || $dob->format('Ymd') !== $dobString) {
+        if (! $dob || $dob->format('Ymd') !== $dobString) {
             return false;
         }
 
@@ -109,7 +108,8 @@ class BeMyKad
     {
 
         $nineth = substr($this->mykadNumber, 8, 1);
-        return $nineth > 4 ? "19" : "20";
+
+        return $nineth > 4 ? '19' : '20';
     }
 
     /**
@@ -117,7 +117,7 @@ class BeMyKad
      * Even number indicates female; odd number indicates male.
      *
      * @return int|null Self::MALE (1) for male, Self::FEMALE (0) for female, or null if invalid.
-    */
+     */
     public function getGender(): ?int
     {
         if (! $this->isValid()) {
@@ -151,8 +151,8 @@ class BeMyKad
      */
     public function getFormattedMyKad(): string
     {
-        return substr($this->mykadNumber, 0, 6) . '-' .
-            substr($this->mykadNumber, 6, 2) . '-' .
+        return substr($this->mykadNumber, 0, 6).'-'.
+            substr($this->mykadNumber, 6, 2).'-'.
             substr($this->mykadNumber, 8);
     }
 
@@ -177,7 +177,7 @@ class BeMyKad
             'isValid' => $this->isValid(),
             'dateOfBirth' => $this->getDateOfBirth(),
             'gender' => $this->getGender() === self::MALE ? 'Male' : 'Female',
-            'state' => $this->getState()
+            'state' => $this->getState(),
         ];
 
         return json_encode($mykadInfo, JSON_PRETTY_PRINT);
