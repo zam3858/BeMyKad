@@ -2,7 +2,7 @@
 
 # BeMyKad
 
-`BeMyKad` is a PHP package for managing and extracting information from Malaysian MyKad numbers. This package helps validate MyKad numbers, retrieve the date of birth, determine the gender, and identify the state or country of birth based on the MyKad number.
+`BeMyKad` is a PHP package for extracting information from Malaysian MyKad numbers. This package helps validate MyKad numbers, retrieve the date of birth, gender, and identify the state or country of birth from the MyKad number.
 
 ## Installation
 
@@ -106,7 +106,7 @@ If you discover any security issues, please review our [security policy](../../s
 ## Credits
 
 - [Hizam Mohd](https://github.com/zam3858)
-- [All Contributors](../../contributors)
+- [Nasrul Hazim](https://github.com/nasrulhazim)
 
 ## License
 
